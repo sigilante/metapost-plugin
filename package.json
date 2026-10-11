@@ -1,0 +1,48 @@
+{
+  "name": "metapost",
+  "displayName": "MetaPost",
+  "description": "Syntax highlighting, comment toggling, and bracket support for MetaPost and METAFONT.",
+  "version": "0.1.0",
+  "publisher": "sigilante",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sigilante/metapost-plugin"
+  },
+  "categories": ["Programming Languages"],
+  "keywords": ["metapost", "metafont", "mp", "mf", "tex", "fonts"],
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "metapost",
+        "aliases": ["MetaPost", "metapost", "mp"],
+        "extensions": [".mp", ".mpii", ".mpiv", ".mpvi", ".mpxl"],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "metafont",
+        "aliases": ["METAFONT", "metafont", "mf"],
+        "extensions": [".mf"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "metapost",
+        "scopeName": "source.metapost",
+        "path": "./syntaxes/metapost.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.latex": "latex"
+        }
+      },
+      {
+        "language": "metafont",
+        "scopeName": "source.metafont",
+        "path": "./syntaxes/metafont.tmLanguage.json"
+      }
+    ]
+  }
+}

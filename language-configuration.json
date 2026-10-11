@@ -1,0 +1,33 @@
+{
+  "comments": {
+    "lineComment": "%"
+  },
+  "brackets": [
+    ["(", ")"],
+    ["[", "]"],
+    ["{", "}"]
+  ],
+  "autoClosingPairs": [
+    { "open": "(", "close": ")" },
+    { "open": "[", "close": "]" },
+    { "open": "{", "close": "}" },
+    { "open": "\"", "close": "\"", "notIn": ["string", "comment"] }
+  ],
+  "surroundingPairs": [
+    ["(", ")"],
+    ["[", "]"],
+    ["{", "}"],
+    ["\"", "\""]
+  ],
+  "wordPattern": "[A-Za-z_'#]+|\\d*\\.\\d+|\\d+",
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(?:(?:beginfig|beginchar|begingroup|def|vardef|primarydef|secondarydef|tertiarydef)\\b(?!.*\\b(?:endfig|endchar|endgroup|enddef)\\b)|(?:if|elseif|else|for|forsuffixes|forever)\\b(?!.*\\b(?:fi|endfor)\\b).*:).*$",
+    "decreaseIndentPattern": "^\\s*(?:endfig|endchar|endgroup|enddef|endfor|fi|else|elseif)\\b"
+  },
+  "folding": {
+    "markers": {
+      "start": "^\\s*(?:beginfig|beginchar|begingroup|def|vardef|primarydef|secondarydef|tertiarydef|for|forsuffixes|forever|if)\\b(?!.*\\b(?:endfig|endchar|endgroup|enddef|endfor|fi)\\b)",
+      "end": "^\\s*(?:endfig|endchar|endgroup|enddef|endfor|fi)\\b"
+    }
+  }
+}

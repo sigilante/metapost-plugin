@@ -1,0 +1,213 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "MetaPost",
+  "scopeName": "source.metapost",
+  "patterns": [
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#tex"
+    },
+    {
+      "include": "#string"
+    },
+    {
+      "include": "#definition"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#number"
+    },
+    {
+      "include": "#operator"
+    },
+    {
+      "include": "#punctuation"
+    }
+  ],
+  "repository": {
+    "comment": {
+      "match": "(%).*$",
+      "name": "comment.line.percentage.metapost",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.comment.metapost"
+        }
+      }
+    },
+    "string": {
+      "begin": "\"",
+      "end": "\"|$",
+      "name": "string.quoted.double.metapost",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.metapost"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.metapost"
+        }
+      }
+    },
+    "tex": {
+      "begin": "(?<![A-Za-z_])(btex|verbatimtex)(?![A-Za-z_])",
+      "end": "(?<![A-Za-z_])(etex)(?![A-Za-z_])",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.tex.begin.metapost"
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "keyword.control.tex.end.metapost"
+        }
+      },
+      "contentName": "meta.embedded.block.latex",
+      "patterns": [
+        {
+          "include": "text.tex.latex"
+        }
+      ]
+    },
+    "definition": {
+      "patterns": [
+        {
+          "match": "(?<![A-Za-z_])(def|vardef)\\s+([A-Za-z_]+)",
+          "captures": {
+            "1": {
+              "name": "storage.type.function.metapost"
+            },
+            "2": {
+              "name": "entity.name.function.metapost"
+            }
+          }
+        },
+        {
+          "match": "(?<![A-Za-z_])(primarydef|secondarydef|tertiarydef)\\s+([A-Za-z_]+)\\s+([A-Za-z_]+|[^\\sA-Za-z_0-9]+)",
+          "captures": {
+            "1": {
+              "name": "storage.type.function.metapost"
+            },
+            "2": {
+              "name": "variable.parameter.metapost"
+            },
+            "3": {
+              "name": "entity.name.function.operator.metapost"
+            }
+          }
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "match": "(?<![A-Za-z_])(?:expandafter|forsuffixes|begingroup|exitunless|scantokens|endgroup|endinput|forever|downto|elseif|endfor|exitif|within|input|until|dump|else|step|upto|end|for|fi|if|of)(?![A-Za-z_])",
+          "name": "keyword.control.metapost"
+        },
+        {
+          "match": "(?<![A-Za-z_])(?:secondarydef|newinternal|tertiarydef|delimiters|primarydef|interim|enddef|vardef|inner|outer|save|def|let)(?![A-Za-z_])",
+          "name": "storage.type.function.metapost"
+        },
+        {
+          "match": "(?<![A-Za-z_])(?:cmykcolor|transform|rgbcolor|boolean|numeric|picture|string|color|pair|path|pen)(?![A-Za-z_])",
+          "name": "storage.type.metapost"
+        },
+        {
+          "match": "(?<![A-Za-z_])(?:secondary|tertiary|primary|suffix|expr|text)(?![A-Za-z_])",
+          "name": "storage.modifier.parameter.metapost"
+        },
+        {
+          "match": "(?<![A-Za-z_])(?:currentpicture|quartercircle|nullpicture|background|currentpen|fullcircle|halfcircle|unitsquare|pencircle|pensquare|cuttings|identity|infinity|penrazor|penspeck|whatever|withdots|beveled|epsilon|mitered|nullpen|rounded|squared|evenly|origin|black|ditto|false|green|right|white|blue|butt|down|left|true|EOF|red|up)(?![A-Za-z_])",
+          "name": "constant.language.metapost"
+        },
+        {
+          "match": "(?<![A-Za-z_])(?:outputformatoptions|defaultcolormodel|restoreclipcolor|tracingequations|tracinglostchars|numberprecision|pixels_per_inch|tracingcapsules|tracingcommands|tracingrestores|outputfilename|outputtemplate|tracingchoices|currentwindow|tracingmacros|tracingonline|tracingoutput|tracingtitles|aspect_ratio|autorounding|defaultscale|dotlabeldiam|numbersystem|o_correction|outputformat|showstopping|tracingspecs|tracingstats|turningcheck|warningcheck|defaultfont|granularity|labeloffset|screen_cols|screen_rows|truecorners|bboxmargin|defaultpen|designsize|displaying|fontmaking|miterlimit|mpprocset|mpversion|prologues|smoothing|troffmode|ahlength|charcode|linejoin|proofing|ahangle|blacker|charext|jobname|linecap|pausing|xoffset|yoffset|chardp|charht|charic|charwd|fillin|minute|month|hour|hppp|mode|time|vppp|year|day)(?![A-Za-z_])",
+          "name": "variable.language.internal.metapost"
+        },
+        {
+          "match": "(?<![A-Za-z_])(?:define_horizontal_corrected_pixels|define_whole_vertical_pixels|define_whole_blacker_pixels|define_corrected_pixels|define_blacker_pixels|define_good_x_pixels|define_good_y_pixels|define_whole_pixels|font_normal_stretch|font_normal_shrink|font_normal_space|filenametemplate|font_extra_space|showdependencies|extra_beginfig|withpostscript|define_pixels|font_x_height|withcmykcolor|withgreyscale|withprescript|boundarychar|drawdblarrow|extra_endfig|showvariable|withoutcolor|withrgbcolor|drawoptions|fontmapfile|fontmapline|tracingnone|doublepath|errmessage|extensible|font_slant|headerbyte|loggingall|lowres_fix|mode_setup|openwindow|randomseed|tracingall|unfilldraw|beginchar|closefrom|dotlabels|drawarrow|font_quad|font_size|fontdimen|makeknown|makelabel|penlabels|penstroke|setbounds|showstats|showtoken|withcolor|beginfig|charlist|culldraw|dotlabel|everyjob|filldraw|ligtable|readfrom|thelabel|contour|cutdraw|display|drawdot|endchar|errhelp|message|shipout|special|withpen|dashed|endfig|labels|penpos|pickup|skipto|undraw|unfill|addto|erase|image|label|write|also|clip|cull|decr|draw|fill|incr|kern|show|stop|to)(?![A-Za-z_])",
+          "name": "support.function.command.metapost"
+        },
+        {
+          "match": "(?<![A-Za-z_])(?:intersectionpoint|intersectiontimes|counterclockwise|directionpoint|reflectedabout|uniformdeviate|directiontime|normaldeviate|rotatedaround|rotatedabout|dashpattern|magentapart|postcontrol|transformed|buildcycle|colormodel|precontrol|unitvector|yellowpart|arclength|blackpart|colorpart|cutbefore|direction|greenpart|interpath|penoffset|substring|takepower|tensepath|bluepart|controls|cutafter|cyanpart|dashpart|fontpart|fontsize|greypart|llcorner|lrcorner|makepath|pathpart|softjoin|textpart|ulcorner|urcorner|arctime|atleast|bounded|ceiling|clipped|decimal|dotprod|inverse|magstep|makepen|penpart|redpart|reverse|rotated|shifted|slanted|stroked|subpath|tension|textual|unknown|xscaled|yscaled|zscaled|center|filled|hround|infont|length|scaled|vround|xxpart|xypart|yxpart|yypart|ASCII|angle|cycle|floor|known|point|round|xpart|ypart|bbox|char|cosd|curl|good|mexp|mlog|sind|sqrt|thru|abs|and|bot|dir|div|hex|lft|max|min|mod|not|oct|odd|off|str|top|on|or|rt)(?![A-Za-z_])",
+          "name": "support.function.metapost"
+        },
+        {
+          "match": "@#|#@|(?<![A-Za-z_])@(?![A-Za-z_])",
+          "name": "variable.parameter.suffix.metapost"
+        },
+        {
+          "match": "(?<![A-Za-z_])[xyz](?=\\d)",
+          "name": "variable.other.point.metapost"
+        }
+      ]
+    },
+    "number": {
+      "patterns": [
+        {
+          "match": "(\\d*\\.\\d+|\\d+)(mm|cm|pt|bp|in|pc|dd|cc)(?![A-Za-z_])",
+          "captures": {
+            "1": {
+              "name": "constant.numeric.metapost"
+            },
+            "2": {
+              "name": "keyword.other.unit.metapost"
+            }
+          }
+        },
+        {
+          "match": "\\d*\\.\\d+|\\d+",
+          "name": "constant.numeric.metapost"
+        },
+        {
+          "match": "(?<![A-Za-z_])(?:bp|cc|cm|dd|in|mm|pc|pt)(?![A-Za-z_])",
+          "name": "keyword.other.unit.metapost"
+        }
+      ]
+    },
+    "operator": {
+      "patterns": [
+        {
+          "match": ":=",
+          "name": "keyword.operator.assignment.metapost"
+        },
+        {
+          "match": "\\.\\.\\.|\\.\\.|---|--|&",
+          "name": "keyword.operator.path.metapost"
+        },
+        {
+          "match": "<>|<=|>=|=|<|>",
+          "name": "keyword.operator.comparison.metapost"
+        },
+        {
+          "match": "\\*\\*|\\+-\\+|\\+\\+|[-+*/]",
+          "name": "keyword.operator.arithmetic.metapost"
+        },
+        {
+          "match": "#",
+          "name": "keyword.operator.sharp.metapost"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "match": ";",
+          "name": "punctuation.terminator.statement.metapost"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.metapost"
+        },
+        {
+          "match": ":",
+          "name": "punctuation.separator.colon.metapost"
+        }
+      ]
+    }
+  }
+}
