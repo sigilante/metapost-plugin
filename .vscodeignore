@@ -2,3 +2,6 @@ scripts/**
 samples/**
 .gitignore
 *.vsix
+node_modules/metapost-lsp/src/**
+node_modules/metapost-lsp/test/**
+node_modules/**/*.map

@@ -1,31 +1,61 @@
 {
   "name": "metapost",
   "displayName": "MetaPost",
-  "description": "Syntax highlighting, comment toggling, and bracket support for MetaPost and METAFONT.",
-  "version": "0.1.0",
+  "description": "MetaPost and METAFONT support: highlighting, comment toggling, and a language server with definitions, references, hover, completion, and mpost error checking.",
+  "version": "0.2.0",
   "publisher": "sigilante",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/sigilante/metapost-plugin"
   },
-  "categories": ["Programming Languages"],
-  "keywords": ["metapost", "metafont", "mp", "mf", "tex", "fonts"],
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "metapost",
+    "metafont",
+    "mp",
+    "mf",
+    "tex",
+    "fonts"
+  ],
   "engines": {
-    "vscode": "^1.75.0"
+    "vscode": "^1.91.0"
   },
+  "main": "./extension.js",
+  "activationEvents": [
+    "onLanguage:metapost",
+    "onLanguage:metafont"
+  ],
   "contributes": {
     "languages": [
       {
         "id": "metapost",
-        "aliases": ["MetaPost", "metapost", "mp"],
-        "extensions": [".mp", ".mpii", ".mpiv", ".mpvi", ".mpxl"],
+        "aliases": [
+          "MetaPost",
+          "metapost",
+          "mp"
+        ],
+        "extensions": [
+          ".mp",
+          ".mpii",
+          ".mpiv",
+          ".mpvi",
+          ".mpxl"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
         "id": "metafont",
-        "aliases": ["METAFONT", "metafont", "mf"],
-        "extensions": [".mf"],
+        "aliases": [
+          "METAFONT",
+          "metafont",
+          "mf"
+        ],
+        "extensions": [
+          ".mf"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],
@@ -43,6 +73,140 @@
         "scopeName": "source.metafont",
         "path": "./syntaxes/metafont.tmLanguage.json"
       }
-    ]
+    ],
+    "commands": [
+      {
+        "command": "metapost.check",
+        "title": "Check Project with mpost",
+        "category": "MetaPost"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "metapost.check",
+          "when": "editorLangId == metapost || editorLangId == metafont"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "MetaPost",
+      "properties": {
+        "metapost.diagnostics.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Run mpost on the project's main file when a MetaPost file is opened or saved, and show its errors."
+        },
+        "metapost.mpost.path": {
+          "type": "string",
+          "default": "mpost",
+          "description": "Path to the mpost executable."
+        },
+        "metapost.mpost.args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Extra command-line arguments for mpost."
+        },
+        "metapost.mpost.timeout": {
+          "type": "number",
+          "default": 30000,
+          "description": "Stop mpost after this many milliseconds."
+        },
+        "metapost.mainFile": {
+          "type": "string",
+          "default": "",
+          "description": "File to compile for error checking, absolute or relative to the workspace folder. Empty: use the file that inputs the current one."
+        },
+        "metapost.projectRoot": {
+          "type": "string",
+          "default": "",
+          "description": "Directory that relative input paths resolve from (where you would run mpost). Empty: detect from the main file's input statements."
+        },
+        "metapost.server.path": {
+          "type": "string",
+          "default": "",
+          "description": "Path to a metapost-lsp server.js to use instead of the bundled one."
+        },
+        "metapost.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Log messages between VS Code and the language server."
+        }
+      }
+    },
+    "semanticTokenScopes": [
+      {
+        "language": "metapost",
+        "scopes": {
+          "variable": [
+            "variable.other.metapost"
+          ],
+          "variable.declaration": [
+            "entity.name.variable.metapost"
+          ],
+          "parameter": [
+            "variable.parameter.metapost"
+          ],
+          "function": [
+            "entity.name.function.metapost"
+          ],
+          "macro": [
+            "entity.name.function.macro.metapost"
+          ],
+          "operator": [
+            "entity.name.function.operator.metapost"
+          ],
+          "property": [
+            "variable.language.internal.metapost"
+          ]
+        }
+      },
+      {
+        "language": "metafont",
+        "scopes": {
+          "variable": [
+            "variable.other.metapost"
+          ],
+          "variable.declaration": [
+            "entity.name.variable.metapost"
+          ],
+          "parameter": [
+            "variable.parameter.metapost"
+          ],
+          "function": [
+            "entity.name.function.metapost"
+          ],
+          "macro": [
+            "entity.name.function.macro.metapost"
+          ],
+          "operator": [
+            "entity.name.function.operator.metapost"
+          ],
+          "property": [
+            "variable.language.internal.metapost"
+          ]
+        }
+      }
+    ],
+    "configurationDefaults": {
+      "[metapost]": {
+        "editor.semanticHighlighting.enabled": true
+      },
+      "[metafont]": {
+        "editor.semanticHighlighting.enabled": true
+      }
+    }
+  },
+  "dependencies": {
+    "metapost-lsp": "github:sigilante/metapost-lsp",
+    "vscode-languageclient": "^10.1.2"
   }
 }
