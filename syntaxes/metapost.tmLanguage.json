@@ -16,6 +16,9 @@
       "include": "#definition"
     },
     {
+      "include": "#declaration"
+    },
+    {
       "include": "#input"
     },
     {
@@ -119,6 +122,38 @@
         }
       ]
     },
+    "declaration": {
+      "begin": "(?:^|(?<=;))\\s*(?:(numeric|pair|path|pen|picture|string|transform|color|rgbcolor|cmykcolor|boolean)|(save))(?![A-Za-z_])",
+      "beginCaptures": {
+        "1": {
+          "name": "storage.type.metapost"
+        },
+        "2": {
+          "name": "storage.type.function.metapost"
+        }
+      },
+      "end": "(?=;)",
+      "name": "meta.declaration.metapost",
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "match": "[A-Za-z_]+",
+          "name": "entity.name.variable.metapost"
+        },
+        {
+          "match": "\\[\\]",
+          "name": "punctuation.definition.array.metapost"
+        },
+        {
+          "include": "#number"
+        },
+        {
+          "include": "#punctuation"
+        }
+      ]
+    },
     "header": {
       "patterns": [
         {
@@ -175,15 +210,15 @@
           "name": "constant.language.metapost"
         },
         {
-          "match": "(?<![A-Za-z_])(?:outputformatoptions|defaultcolormodel|restoreclipcolor|tracingequations|tracinglostchars|numberprecision|pixels_per_inch|tracingcapsules|tracingcommands|tracingrestores|outputfilename|outputtemplate|tracingchoices|currentwindow|tracingmacros|tracingonline|tracingoutput|tracingtitles|aspect_ratio|autorounding|defaultscale|dotlabeldiam|numbersystem|o_correction|outputformat|showstopping|tracingspecs|tracingstats|turningcheck|warningcheck|defaultfont|granularity|labeloffset|screen_cols|screen_rows|truecorners|bboxmargin|defaultpen|designsize|displaying|fontmaking|miterlimit|mpprocset|mpversion|prologues|smoothing|troffmode|ahlength|charcode|linejoin|proofing|ahangle|blacker|charext|jobname|linecap|pausing|xoffset|yoffset|chardp|charht|charic|charwd|fillin|minute|month|hour|hppp|mode|time|vppp|year|day)(?![A-Za-z_])",
+          "match": "(?<![A-Za-z_])(?:outputformatoptions|defaultcolormodel|restoreclipcolor|tracingequations|tracinglostchars|numberprecision|tracingcapsules|tracingcommands|tracingrestores|outputfilename|outputtemplate|tracingchoices|tracingmacros|tracingonline|tracingoutput|tracingtitles|defaultscale|dotlabeldiam|numbersystem|outputformat|showstopping|tracingspecs|tracingstats|warningcheck|defaultfont|labeloffset|truecorners|bboxmargin|defaultpen|designsize|fontmaking|miterlimit|mpprocset|mpversion|prologues|troffmode|ahlength|charcode|linejoin|ahangle|charext|jobname|linecap|pausing|chardp|charht|charic|charwd|minute|month|hour|hppp|time|vppp|year|day)(?![A-Za-z_])",
           "name": "variable.language.internal.metapost"
         },
         {
-          "match": "(?<![A-Za-z_])(?:define_horizontal_corrected_pixels|define_whole_vertical_pixels|define_whole_blacker_pixels|define_corrected_pixels|define_blacker_pixels|define_good_x_pixels|define_good_y_pixels|define_whole_pixels|font_normal_stretch|font_normal_shrink|font_normal_space|filenametemplate|font_extra_space|showdependencies|extra_beginfig|withpostscript|define_pixels|font_x_height|withcmykcolor|withgreyscale|withprescript|boundarychar|drawdblarrow|extra_endfig|showvariable|withoutcolor|withrgbcolor|drawoptions|fontmapfile|fontmapline|tracingnone|doublepath|errmessage|extensible|font_slant|headerbyte|loggingall|lowres_fix|mode_setup|openwindow|randomseed|tracingall|unfilldraw|beginchar|closefrom|dotlabels|drawarrow|font_quad|font_size|fontdimen|makeknown|makelabel|penlabels|penstroke|setbounds|showstats|showtoken|withcolor|beginfig|charlist|culldraw|dotlabel|everyjob|filldraw|ligtable|readfrom|thelabel|contour|cutdraw|display|drawdot|endchar|errhelp|message|shipout|special|withpen|dashed|endfig|labels|penpos|pickup|skipto|undraw|unfill|addto|erase|image|label|write|also|clip|cull|decr|draw|fill|incr|kern|show|stop|to)(?![A-Za-z_])",
+          "match": "(?<![A-Za-z_])(?:filenametemplate|showdependencies|extra_beginfig|withpostscript|withcmykcolor|withgreyscale|withprescript|boundarychar|drawdblarrow|extra_endfig|showvariable|withoutcolor|withrgbcolor|drawoptions|fontmapfile|fontmapline|tracingnone|doublepath|errmessage|extensible|headerbyte|loggingall|randomseed|tracingall|unfilldraw|closefrom|dotlabels|drawarrow|fontdimen|setbounds|showstats|showtoken|withcolor|beginfig|charlist|dotlabel|everyjob|filldraw|ligtable|readfrom|thelabel|contour|cutdraw|drawdot|errhelp|message|shipout|special|withpen|dashed|endfig|labels|pickup|skipto|undraw|unfill|addto|erase|image|label|write|also|clip|decr|draw|fill|incr|kern|show|to)(?![A-Za-z_])",
           "name": "support.function.command.metapost"
         },
         {
-          "match": "(?<![A-Za-z_])(?:intersectionpoint|intersectiontimes|counterclockwise|directionpoint|reflectedabout|uniformdeviate|directiontime|normaldeviate|rotatedaround|rotatedabout|dashpattern|magentapart|postcontrol|transformed|buildcycle|colormodel|precontrol|unitvector|yellowpart|arclength|blackpart|colorpart|cutbefore|direction|greenpart|interpath|penoffset|substring|takepower|tensepath|bluepart|controls|cutafter|cyanpart|dashpart|fontpart|fontsize|greypart|llcorner|lrcorner|makepath|pathpart|softjoin|textpart|ulcorner|urcorner|arctime|atleast|bounded|ceiling|clipped|decimal|dotprod|inverse|magstep|makepen|penpart|redpart|reverse|rotated|shifted|slanted|stroked|subpath|tension|textual|unknown|xscaled|yscaled|zscaled|center|filled|hround|infont|length|scaled|vround|xxpart|xypart|yxpart|yypart|ASCII|angle|cycle|floor|known|point|round|xpart|ypart|bbox|char|cosd|curl|good|mexp|mlog|sind|sqrt|thru|abs|and|bot|dir|div|hex|lft|max|min|mod|not|oct|odd|off|str|top|on|or|rt)(?![A-Za-z_])",
+          "match": "(?<![A-Za-z_])(?:intersectionpoint|intersectiontimes|counterclockwise|directionpoint|reflectedabout|uniformdeviate|directiontime|normaldeviate|rotatedaround|rotatedabout|dashpattern|magentapart|postcontrol|transformed|buildcycle|colormodel|precontrol|unitvector|yellowpart|arclength|blackpart|colorpart|cutbefore|direction|greenpart|interpath|penoffset|substring|takepower|tensepath|bluepart|controls|cutafter|cyanpart|dashpart|fontpart|fontsize|greypart|llcorner|lrcorner|makepath|pathpart|softjoin|textpart|ulcorner|urcorner|arctime|atleast|bounded|ceiling|clipped|decimal|dotprod|inverse|magstep|makepen|penpart|redpart|reverse|rotated|shifted|slanted|stroked|subpath|tension|textual|unknown|xscaled|yscaled|zscaled|center|filled|infont|length|scaled|xxpart|xypart|yxpart|yypart|ASCII|angle|cycle|floor|known|point|round|xpart|ypart|bbox|char|cosd|curl|mexp|mlog|sind|sqrt|thru|abs|and|bot|dir|div|hex|lft|max|min|mod|not|oct|odd|off|str|top|on|or|rt)(?![A-Za-z_])",
           "name": "support.function.metapost"
         },
         {

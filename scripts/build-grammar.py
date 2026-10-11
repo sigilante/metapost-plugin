@@ -37,14 +37,8 @@ withcolor withrgbcolor withcmykcolor withgreyscale withoutcolor withprescript
 withpostscript dashed pickup shipout image message errmessage errhelp show
 showtoken showvariable showdependencies showstats special fontmapfile
 fontmapline readfrom write to closefrom randomseed everyjob filenametemplate
-beginchar endchar penpos penstroke penlabels makelabel makeknown mode_setup
-font_size font_slant font_normal_space font_normal_stretch font_normal_shrink
-font_x_height font_quad font_extra_space define_pixels define_whole_pixels
-define_whole_vertical_pixels define_good_x_pixels define_good_y_pixels
-define_blacker_pixels define_whole_blacker_pixels define_corrected_pixels
-define_horizontal_corrected_pixels lowres_fix ligtable charlist extensible
-fontdimen headerbyte kern skipto boundarychar culldraw cull addto erase
-openwindow display stop loggingall tracingall tracingnone incr decr
+ligtable charlist extensible fontdimen headerbyte kern skipto boundarychar
+erase loggingall tracingall tracingnone incr decr
 """.split()
 
 # Operators and function-like macros.
@@ -61,7 +55,7 @@ max min mod div dotprod known unknown stroked filled textual clipped bounded
 cycle curl tension controls atleast llcorner lrcorner ulcorner urcorner center
 bbox buildcycle counterclockwise cutafter cutbefore interpath inverse magstep
 penoffset softjoin takepower tensepath thru infont dashpattern on off
-odd str top bot lft rt good hround vround
+odd str top bot lft rt
 """.split()
 
 CONSTANTS = """
@@ -74,6 +68,24 @@ ditto EOF
 
 UNITS = "mm cm pt bp in pc dd cc".split()
 
+# Only highlighted in .mf files: in MetaPost these are ordinary names
+# (e.g. a variable called font_size).
+MF_COMMANDS = """
+beginchar endchar penpos penstroke penlabels makelabel makeknown mode_setup
+font_size font_slant font_normal_space font_normal_stretch font_normal_shrink
+font_x_height font_quad font_extra_space define_pixels define_whole_pixels
+define_whole_vertical_pixels define_good_x_pixels define_good_y_pixels
+define_blacker_pixels define_whole_blacker_pixels define_corrected_pixels
+define_horizontal_corrected_pixels lowres_fix culldraw cull openwindow
+display stop good hround vround
+""".split()
+
+MF_INTERNALS = """
+granularity fillin smoothing autorounding turningcheck proofing xoffset
+yoffset mode displaying currentwindow screen_rows screen_cols blacker
+o_correction pixels_per_inch aspect_ratio
+""".split()
+
 INTERNALS = """
 ahangle ahlength bboxmargin charcode charext chardp charht charic charwd
 day hour minute month year time defaultcolormodel defaultfont defaultpen
@@ -83,10 +95,7 @@ hppp vppp mpprocset mpversion jobname numberprecision numbersystem
 outputfilename outputformat outputformatoptions outputtemplate
 tracingcapsules tracingchoices tracingcommands tracingequations
 tracinglostchars tracingmacros tracingonline tracingoutput tracingrestores
-tracingspecs tracingstats tracingtitles designsize fontmaking granularity
-fillin smoothing autorounding turningcheck proofing xoffset yoffset
-mode displaying currentwindow screen_rows screen_cols
-blacker o_correction pixels_per_inch aspect_ratio
+tracingspecs tracingstats tracingtitles designsize fontmaking
 """.split()
 
 
@@ -104,6 +113,7 @@ grammar = {
         {"include": "#tex"},
         {"include": "#string"},
         {"include": "#definition"},
+        {"include": "#declaration"},
         {"include": "#input"},
         {"include": "#keywords"},
         {"include": "#number"},
@@ -159,6 +169,24 @@ grammar = {
                     "patterns": [{"include": "#header"}],
                 },
             ]
+        },
+        "declaration": {
+            # A type keyword (or `save`) at the start of a statement declares
+            # every name up to the closing `;`.
+            "begin": r"(?:^|(?<=;))\s*(?:(" + "|".join(TYPES) + r")|(save))" + E,
+            "beginCaptures": {
+                "1": {"name": "storage.type.metapost"},
+                "2": {"name": "storage.type.function.metapost"},
+            },
+            "end": "(?=;)",
+            "name": "meta.declaration.metapost",
+            "patterns": [
+                {"include": "#comment"},
+                {"match": r"[A-Za-z_]+", "name": "entity.name.variable.metapost"},
+                {"match": r"\[\]", "name": "punctuation.definition.array.metapost"},
+                {"include": "#number"},
+                {"include": "#punctuation"},
+            ],
         },
         "header": {
             "patterns": [
@@ -228,7 +256,11 @@ metafont = {
     "$schema": grammar["$schema"],
     "name": "METAFONT",
     "scopeName": "source.metafont",
-    "patterns": [{"include": "source.metapost"}],
+    "patterns": [
+        {"match": words(MF_INTERNALS), "name": "variable.language.internal.metafont"},
+        {"match": words(MF_COMMANDS), "name": "support.function.command.metafont"},
+        {"include": "source.metapost"},
+    ],
 }
 
 out = Path(__file__).resolve().parent.parent / "syntaxes"

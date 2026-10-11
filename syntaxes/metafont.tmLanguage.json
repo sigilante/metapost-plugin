@@ -4,6 +4,14 @@
   "scopeName": "source.metafont",
   "patterns": [
     {
+      "match": "(?<![A-Za-z_])(?:pixels_per_inch|currentwindow|aspect_ratio|autorounding|o_correction|turningcheck|granularity|screen_cols|screen_rows|displaying|smoothing|proofing|blacker|xoffset|yoffset|fillin|mode)(?![A-Za-z_])",
+      "name": "variable.language.internal.metafont"
+    },
+    {
+      "match": "(?<![A-Za-z_])(?:define_horizontal_corrected_pixels|define_whole_vertical_pixels|define_whole_blacker_pixels|define_corrected_pixels|define_blacker_pixels|define_good_x_pixels|define_good_y_pixels|define_whole_pixels|font_normal_stretch|font_normal_shrink|font_normal_space|font_extra_space|define_pixels|font_x_height|font_slant|lowres_fix|mode_setup|openwindow|beginchar|font_quad|font_size|makeknown|makelabel|penlabels|penstroke|culldraw|display|endchar|hround|penpos|vround|cull|good|stop)(?![A-Za-z_])",
+      "name": "support.function.command.metafont"
+    },
+    {
       "include": "source.metapost"
     }
   ]
