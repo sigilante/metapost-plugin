@@ -104,6 +104,7 @@ grammar = {
         {"include": "#tex"},
         {"include": "#string"},
         {"include": "#definition"},
+        {"include": "#input"},
         {"include": "#keywords"},
         {"include": "#number"},
         {"include": "#operator"},
@@ -132,23 +133,49 @@ grammar = {
             "patterns": [{"include": "text.tex.latex"}],
         },
         "definition": {
+            # A macro header runs from `def`/`vardef` to the `=` (or `:=`) that
+            # opens the body, possibly across several lines. Every plain
+            # identifier inside it is a parameter name.
             "patterns": [
                 {
-                    "match": B + r"(def|vardef)\s+([A-Za-z_]+)",
-                    "captures": {
+                    "begin": B + r"(def|vardef)\s+([A-Za-z_]+)",
+                    "beginCaptures": {
                         "1": {"name": "storage.type.function.metapost"},
                         "2": {"name": "entity.name.function.metapost"},
                     },
+                    "end": r"(?=:?=)|(?=;)",
+                    "name": "meta.function.header.metapost",
+                    "patterns": [{"include": "#header"}],
                 },
                 {
-                    "match": B + r"(primarydef|secondarydef|tertiarydef)\s+([A-Za-z_]+)\s+([A-Za-z_]+|[^\sA-Za-z_0-9]+)",
-                    "captures": {
+                    "begin": B + r"(primarydef|secondarydef|tertiarydef)\s+([A-Za-z_]+)\s+([A-Za-z_]+|[^\sA-Za-z_0-9%;]+)",
+                    "beginCaptures": {
                         "1": {"name": "storage.type.function.metapost"},
                         "2": {"name": "variable.parameter.metapost"},
                         "3": {"name": "entity.name.function.operator.metapost"},
                     },
+                    "end": r"(?=:?=)|(?=;)",
+                    "name": "meta.function.header.metapost",
+                    "patterns": [{"include": "#header"}],
                 },
             ]
+        },
+        "header": {
+            "patterns": [
+                {"include": "#comment"},
+                {"match": words(PARAMETER_TYPES), "name": "storage.modifier.parameter.metapost"},
+                {"match": r"@#|#@|(?<![A-Za-z_])@(?![A-Za-z_])", "name": "variable.parameter.suffix.metapost"},
+                {"match": r"[A-Za-z_]+", "name": "variable.parameter.metapost"},
+                {"include": "#punctuation"},
+            ]
+        },
+        "input": {
+            # `input` takes a bare file name, terminated by space, `;` or `%`.
+            "match": B + r"(input)\s+([^\s;%\"]+)",
+            "captures": {
+                "1": {"name": "keyword.control.import.metapost"},
+                "2": {"name": "string.unquoted.filename.metapost"},
+            },
         },
         "keywords": {
             "patterns": [

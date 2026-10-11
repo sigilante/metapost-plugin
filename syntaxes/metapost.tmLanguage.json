@@ -16,6 +16,9 @@
       "include": "#definition"
     },
     {
+      "include": "#input"
+    },
+    {
       "include": "#keywords"
     },
     {
@@ -76,19 +79,26 @@
     "definition": {
       "patterns": [
         {
-          "match": "(?<![A-Za-z_])(def|vardef)\\s+([A-Za-z_]+)",
-          "captures": {
+          "begin": "(?<![A-Za-z_])(def|vardef)\\s+([A-Za-z_]+)",
+          "beginCaptures": {
             "1": {
               "name": "storage.type.function.metapost"
             },
             "2": {
               "name": "entity.name.function.metapost"
             }
-          }
+          },
+          "end": "(?=:?=)|(?=;)",
+          "name": "meta.function.header.metapost",
+          "patterns": [
+            {
+              "include": "#header"
+            }
+          ]
         },
         {
-          "match": "(?<![A-Za-z_])(primarydef|secondarydef|tertiarydef)\\s+([A-Za-z_]+)\\s+([A-Za-z_]+|[^\\sA-Za-z_0-9]+)",
-          "captures": {
+          "begin": "(?<![A-Za-z_])(primarydef|secondarydef|tertiarydef)\\s+([A-Za-z_]+)\\s+([A-Za-z_]+|[^\\sA-Za-z_0-9%;]+)",
+          "beginCaptures": {
             "1": {
               "name": "storage.type.function.metapost"
             },
@@ -98,9 +108,49 @@
             "3": {
               "name": "entity.name.function.operator.metapost"
             }
-          }
+          },
+          "end": "(?=:?=)|(?=;)",
+          "name": "meta.function.header.metapost",
+          "patterns": [
+            {
+              "include": "#header"
+            }
+          ]
         }
       ]
+    },
+    "header": {
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "match": "(?<![A-Za-z_])(?:secondary|tertiary|primary|suffix|expr|text)(?![A-Za-z_])",
+          "name": "storage.modifier.parameter.metapost"
+        },
+        {
+          "match": "@#|#@|(?<![A-Za-z_])@(?![A-Za-z_])",
+          "name": "variable.parameter.suffix.metapost"
+        },
+        {
+          "match": "[A-Za-z_]+",
+          "name": "variable.parameter.metapost"
+        },
+        {
+          "include": "#punctuation"
+        }
+      ]
+    },
+    "input": {
+      "match": "(?<![A-Za-z_])(input)\\s+([^\\s;%\\\"]+)",
+      "captures": {
+        "1": {
+          "name": "keyword.control.import.metapost"
+        },
+        "2": {
+          "name": "string.unquoted.filename.metapost"
+        }
+      }
     },
     "keywords": {
       "patterns": [
